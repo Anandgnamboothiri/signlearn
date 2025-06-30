@@ -9,8 +9,8 @@
   </head>
   <body class="bg-gray-50 text-gray-900 transition-all duration-300">
     <!-- Header -->
-    <header class="flex items-center justify-between p-6">
-      <div class="flex gap-4">
+    <header class="flex flex-col items-center justify-center p-6 md:flex-row md:items-center md:justify-between">
+      <div class="flex gap-4 order-2 md:order-1 mt-4 md:mt-0">
         <button
           id="signinBtn"
           class="h-12 px-6 text-lg border rounded hover:bg-gray-100"
@@ -24,11 +24,11 @@
           Sign Up
         </button>
       </div>
-      <div class="text-center">
+      <div class="text-center order-1 md:order-2 mb-4 md:mb-0">
         <h1 class="text-4xl font-bold text-blue-600 mb-1">SignLearn</h1>
         <p class="text-lg text-gray-600">Inclusive Learning for Everyone</p>
       </div>
-      <div class="w-48"></div>
+      <div class="w-48 order-3"></div>
     </header>
 
     <!-- Main Content -->
@@ -80,7 +80,7 @@
               class="h-16 pl-16 pr-24 text-lg border-2 rounded-full w-full shadow"
             />
             <img
-              src="pictures/search.PNG"
+              src="pictures/home.PNG"
               class="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400"
               alt="Search"
             />
@@ -134,7 +134,7 @@
         </div>
         <div>
           <p class="font-bold">Voice Assistant</p>
-          <p class="text-sm text-gray-600">How can I help?</p>
+          <p id="assistantStatus" class="text-sm text-gray-600">How can I help?</p>
         </div>
       </div>
     </div>
@@ -148,11 +148,13 @@
         setTimeout(() => (spaceCount = 0), 500);
         if (spaceCount >= 3 && !assistantActive) {
           document.getElementById('assistantModal').classList.remove('hidden');
+          document.getElementById('assistantStatus').textContent = 'Listening...';
           assistantActive = true;
           // Start voice navigation recognition
           startVoiceNavigation();
           setTimeout(() => {
             document.getElementById('assistantModal').classList.add('hidden');
+            document.getElementById('assistantStatus').textContent = 'How can I help?';
             assistantActive = false;
             stopVoiceNavigation();
           }, 8000); // Hide after 8 seconds
@@ -162,6 +164,10 @@
     // Voice navigation logic
     let navRecognition;
     function startVoiceNavigation() {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        document.getElementById('assistantStatus').textContent = 'Voice recognition not supported.';
+        return;
+      }
       navRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
       navRecognition.continuous = false;
       navRecognition.interimResults = false;
@@ -171,7 +177,24 @@
           window.location.href = 'courses_page.html';
         } else if (command.includes('listen page')) {
           window.location.href = 'voice_based_course_page.html';
+        } else if (command.includes('home')) {
+          window.location.href = 'index.html';
+        } else if (command.includes('sign language')) {
+          window.location.href = 'course_view_page.html';
+        } else if (command.includes('listen')) {
+          window.location.href = 'voice_based_course_page.html';
+        } else {
+          document.getElementById('assistantStatus').textContent = 'Command not recognized, try again.';
+          setTimeout(() => {
+            document.getElementById('assistantStatus').textContent = 'Listening...';
+          }, 1500);
         }
+      };
+      navRecognition.onerror = (event) => {
+        document.getElementById('assistantStatus').textContent = 'Error: ' + event.error;
+        setTimeout(() => {
+          document.getElementById('assistantStatus').textContent = 'Listening...';
+        }, 2000);
       };
       navRecognition.start();
     }
