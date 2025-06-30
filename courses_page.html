@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SignLearn - Courses</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-50 text-gray-900">
+    <!-- Header -->
+    <header class="flex items-center justify-between p-6 border-b">
+      <div class="flex items-center gap-4">
+        <a
+          href="index.html"
+          class="text-lg flex items-center text-blue-600 hover:underline"
+        >
+          <img src="https://www.svgrepo.com/show/522946/arrow-left.svg" class="w-5 h-5 mr-2" alt="Back" />
+          Back to Home
+        </a>
+      </div>
+      <div class="text-center">
+        <h1 class="text-3xl font-bold">Available Courses</h1>
+        <p class="text-lg text-gray-600">Choose your learning path</p>
+      </div>
+      <div class="w-48"></div>
+    </header>
+
+    <!-- Courses Grid -->
+    <main class="max-w-6xl mx-auto px-6 py-12">
+      <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+        <!-- Course Card -->
+        <div class="border-2 border-gray-200 bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-2xl font-bold mb-2">Basic Sign Language Alphabet</h3>
+          <p class="text-gray-600 mb-4">
+            Learn the fundamental hand shapes and movements for the alphabet in
+            sign language.
+          </p>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">45 minutes</span>
+            <span class="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">Beginner</span>
+          </div>
+          <div class="flex gap-4">
+            <a href="voice-page.html" class="flex-1">
+              <button
+                class="w-full h-12 border-2 border-blue-200 text-blue-700 rounded hover:bg-blue-50 flex items-center justify-center"
+              >
+                <img src="https://www.svgrepo.com/show/499310/volume.svg" class="inline w-5 h-5 mr-2" alt="Audio" />
+                Listen
+              </button>
+            </a>
+            <a
+              href="course-view.html"
+              class="flex-1 h-12 flex justify-center items-center bg-green-600 hover:bg-green-700 text-white rounded"
+            >
+              <img src="https://www.svgrepo.com/show/499075/hand-rock.svg" class="w-5 h-5 mr-2" alt="Sign" />
+              Sign Language
+            </a>
+          </div>
+        </div>
+
+        <!-- Repeat this card for each course with different details -->
+        <!-- Example for another course -->
+        <div class="border-2 border-gray-200 bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-2xl font-bold mb-2">Common Daily Phrases</h3>
+          <p class="text-gray-600 mb-4">
+            Master essential phrases for everyday communication using sign
+            language.
+          </p>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">1 hr 20 min</span>
+            <span class="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">Beginner</span>
+          </div>
+          <div class="flex gap-4">
+            <button
+              class="flex-1 h-12 border-2 border-blue-200 text-blue-700 rounded hover:bg-blue-50"
+            >
+              <img src="https://www.svgrepo.com/show/499310/volume.svg" class="inline w-5 h-5 mr-2" alt="Audio" />
+              Listen
+            </button>
+            <a
+              href="course-view.html"
+              class="flex-1 h-12 flex justify-center items-center bg-green-600 hover:bg-green-700 text-white rounded"
+            >
+              <img src="https://www.svgrepo.com/show/499075/hand-rock.svg" class="w-5 h-5 mr-2" alt="Sign" />
+              Sign Language
+            </a>
+          </div>
+        </div>
+        <!-- Add more cards below as needed -->
+      </div>
+    </main>
+  </body>
+</html>

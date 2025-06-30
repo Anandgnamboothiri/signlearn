@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Course - SignLearn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #assistantModal {
+      animation: fadeInUp 0.3s ease;
+    }
+    @keyframes fadeInUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <!-- Header -->
+  <header class="flex items-center justify-between p-6 border-b">
+    <a href="courses.html" class="text-lg flex items-center text-blue-600 hover:underline">
+      <img src="https://www.svgrepo.com/show/522946/arrow-left.svg" class="w-5 h-5 mr-2" alt="Back" />
+      Back to Courses
+    </a>
+    <h1 class="text-2xl font-bold">Basic Sign Language Alphabet - Voice Mode</h1>
+    <div class="w-48"></div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="grid lg:grid-cols-2 gap-8 p-6">
+    <!-- Text-to-Speech Section -->
+    <div class="bg-white border rounded-lg shadow-sm p-6">
+      <h2 class="text-xl font-bold mb-4">Course Content & Audio</h2>
+      <div id="courseText" class="h-96 overflow-y-auto text-lg leading-relaxed">
+        <p>Welcome to the Basic Sign Language Alphabet course...</p>
+        <p>The alphabet is the foundation of all sign language communication...</p>
+        <p>Let's begin with the letter A...</p>
+        <p>The letter B is formed by holding...</p>
+        <p>Continue practicing each letter slowly and deliberately...</p>
+        <p>Practice is essential for muscle memory...</p>
+        <p>Take your time to master each letter...</p>
+      </div>
+      <div class="mt-6 flex items-center gap-4">
+        <button id="ttsBtn" class="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700">Start Reading</button>
+        <button id="stopTtsBtn" class="px-6 py-3 bg-red-600 text-white rounded hover:bg-red-700">Stop Reading</button>
+        <span class="text-sm font-medium">Reading Speed:</span>
+        <button class="px-3 py-1 border rounded" onclick="speechRate=0.5">Slower</button>
+        <button class="px-3 py-1 border rounded" onclick="speechRate=1">1x</button>
+        <button class="px-3 py-1 border rounded" onclick="speechRate=1.5">Faster</button>
+      </div>
+    </div>
+
+    <!-- Voice Note Section -->
+    <div class="bg-white border rounded-lg shadow-sm p-6">
+      <h2 class="text-xl font-bold mb-4">Voice Notes</h2>
+      <div class="flex flex-col items-center">
+        <button id="recordBtn" class="w-16 h-16 rounded-full bg-purple-500 text-white mb-4 shadow-lg animate-pulse">
+          🎙️
+        </button>
+        <p class="mb-2 text-sm">Click to start voice recording</p>
+        <textarea id="noteArea" class="w-full h-24 p-3 border rounded" placeholder="Your spoken notes will appear here..."></textarea>
+        <button id="saveNoteBtn" class="mt-4 w-full bg-blue-500 text-white py-2 rounded">💾 Save Note</button>
+        <p class="mt-4 text-sm font-semibold">Recent Notes (0):</p>
+        <ul id="notesList" class="w-full text-sm text-gray-600 mt-2 space-y-1"></ul>
+      </div>
+    </div>
+  </main>
+
+  <!-- Voice Assistant Modal -->
+  <div id="assistantModal" class="hidden fixed bottom-20 right-10 bg-white border shadow-lg rounded-lg p-4 w-80 z-50">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center animate-ping">
+        🎤
+      </div>
+      <div>
+        <p class="font-bold">Voice Assistant</p>
+        <p class="text-sm text-gray-600">How can I help?</p>
+      </div>
+    </div>
+  </div>
+  <button id="assistantHint" class="fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-full text-xs shadow-lg">Press Spacebar 3x for Voice Assistant</button>
+
+  <script>
+    let synth = window.speechSynthesis;
+    let speechRate = 1;
+    const courseText = document.getElementById('courseText').innerText;
+    document.getElementById('ttsBtn').onclick = () => {
+      const utter = new SpeechSynthesisUtterance(courseText);
+      utter.rate = speechRate;
+      synth.speak(utter);
+    };
+
+    document.getElementById('stopTtsBtn').onclick = () => {
+      synth.cancel();
+    };
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    let recording = false;
+    let finalTranscript = '';
+
+    document.getElementById('recordBtn').onclick = () => {
+      if (!recording) {
+        recognition.start();
+        recording = true;
+        document.getElementById('recordBtn').classList.add('bg-red-500');
+      } else {
+        recognition.stop();
+        recording = false;
+        document.getElementById('recordBtn').classList.remove('bg-red-500');
+      }
+    };
+
+    recognition.onresult = (event) => {
+      let transcript = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      finalTranscript += transcript;
+      document.getElementById('noteArea').value = finalTranscript;
+    };
+
+    document.getElementById('saveNoteBtn').onclick = () => {
+      if (finalTranscript.trim() !== '') {
+        const li = document.createElement('li');
+        li.textContent = finalTranscript;
+        document.getElementById('notesList').appendChild(li);
+        document.getElementById('noteArea').value = '';
+        finalTranscript = '';
+      }
+    };
+
+    // Assistant popup
+    let spaceCount = 0;
+    let assistantActive = false;
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        spaceCount++;
+        setTimeout(() => (spaceCount = 0), 500);
+        if (spaceCount >= 3 && !assistantActive) {
+          document.getElementById('assistantModal').classList.remove('hidden');
+          assistantActive = true;
+          // Start voice navigation recognition
+          startVoiceNavigation();
+          setTimeout(() => {
+            document.getElementById('assistantModal').classList.add('hidden');
+            assistantActive = false;
+            stopVoiceNavigation();
+          }, 8000); // Hide after 8 seconds
+        }
+      }
+    });
+
+    // Voice navigation logic
+    let navRecognition;
+    function startVoiceNavigation() {
+      navRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      navRecognition.continuous = false;
+      navRecognition.interimResults = false;
+      navRecognition.onresult = (event) => {
+        const command = event.results[0][0].transcript.toLowerCase();
+        if (command.includes('course page')) {
+          window.location.href = 'courses.html';
+        } else if (command.includes('listen page')) {
+          window.location.href = 'voice-page.html';
+        }
+      };
+      navRecognition.start();
+    }
+    function stopVoiceNavigation() {
+      if (navRecognition) navRecognition.stop();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SignLearn - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="favicon.ico" />
+  </head>
+  <body class="bg-gray-50 text-gray-900 transition-all duration-300">
+    <!-- Header -->
+    <header class="flex items-center justify-between p-6">
+      <div class="flex gap-4">
+        <button
+          id="signinBtn"
+          class="h-12 px-6 text-lg border rounded hover:bg-gray-100"
+        >
+          Sign In
+        </button>
+        <button
+          id="signupBtn"
+          class="h-12 px-6 text-lg bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Sign Up
+        </button>
+      </div>
+      <div class="text-center">
+        <h1 class="text-4xl font-bold text-blue-600 mb-1">SignLearn</h1>
+        <p class="text-lg text-gray-600">Inclusive Learning for Everyone</p>
+      </div>
+      <div class="w-48"></div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex items-center justify-center min-h-[calc(100vh-120px)] px-8">
+      <div class="relative w-full max-w-2xl">
+        <!-- Navigation Icons -->
+        <div
+          class="absolute -top-24 left-1/2 transform -translate-x-1/2 z-10 md:-top-24 md:left-1/2 md:-translate-x-1/2 top-2 left-1/2 -translate-x-1/2"
+        >
+          <button
+            class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white shadow hover:bg-blue-100 transition"
+          >
+            <img src="pictures/home.PNG" class="w-6 h-6 md:w-8 md:h-8 m-auto" alt="Home" />
+          </button>
+        </div>
+        <div class="absolute md:-left-24 md:top-1/2 md:-translate-y-1/2 left-2 top-1/2 -translate-y-1/2 z-10">
+          <a href="courses.html">
+            <button
+              class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white shadow hover:bg-green-100 transition"
+            >
+              <img src="pictures/courses.PNG" class="w-6 h-6 md:w-8 md:h-8 m-auto" alt="Courses" />
+            </button>
+          </a>
+        </div>
+        <div class="absolute md:-right-24 md:top-1/2 md:-translate-y-1/2 right-2 top-1/2 -translate-y-1/2 z-10">
+          <button
+            class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white shadow hover:bg-purple-100 transition"
+          >
+            <img src="pictures/latest.PNG" class="w-6 h-6 md:w-8 md:h-8 m-auto" alt="Recent" />
+          </button>
+        </div>
+        <div
+          class="absolute md:-bottom-24 md:left-1/2 md:-translate-x-1/2 bottom-2 left-1/2 -translate-x-1/2 z-10"
+        >
+          <button
+            id="settingsBtn"
+            class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white shadow hover:bg-gray-200 transition"
+          >
+            <img src="pictures/settings.PNG" class="w-6 h-6 md:w-8 md:h-8 m-auto" alt="Settings" />
+          </button>
+        </div>
+
+        <!-- Central Search Bar -->
+        <div class="text-center space-y-8">
+          <div class="relative max-w-lg mx-auto">
+            <input
+              type="text"
+              placeholder="What would you like to learn today?"
+              class="h-16 pl-16 pr-24 text-lg border-2 rounded-full w-full shadow"
+            />
+            <img
+              src="pictures/search.PNG"
+              class="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400"
+              alt="Search"
+            />
+            <div
+              class="absolute right-4 top-1/2 transform -translate-y-1/2 flex gap-2"
+            >
+              <button
+                class="w-10 h-10 p-0 rounded-full hover:bg-blue-100"
+                title="Voice search"
+              >
+                <img
+                  src="pictures/micropone.PNG"
+                  class="w-5 h-5 m-auto"
+                  alt="Mic"
+                />
+              </button>
+              <button
+                class="w-10 h-10 p-0 rounded-full hover:bg-green-100"
+                title="Upload"
+              >
+                <img
+                  src="pictures/import.PNG"
+                  class="w-5 h-5 m-auto"
+                  alt="Upload"
+                />
+              </button>
+            </div>
+          </div>
+
+          <div class="flex gap-6 justify-center">
+            <button
+              class="px-8 py-4 text-lg bg-blue-600 hover:bg-blue-700 text-white rounded-full"
+            >
+              I'm ready to learn
+            </button>
+            <button
+              class="px-8 py-4 text-lg border-2 hover:bg-gray-50 rounded-full"
+            >
+              Surprise me
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Voice Assistant Modal -->
+    <div id="assistantModal" class="hidden fixed bottom-20 right-10 bg-white border shadow-lg rounded-lg p-4 w-80 z-50">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center animate-ping">
+          🎤
+        </div>
+        <div>
+          <p class="font-bold">Voice Assistant</p>
+          <p class="text-sm text-gray-600">How can I help?</p>
+        </div>
+      </div>
+    </div>
+    <button id="assistantHint" class="fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-full text-xs shadow-lg">Press Spacebar 3x for Voice Assistant</button>
+    <script>
+    let spaceCount = 0;
+    let assistantActive = false;
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        spaceCount++;
+        setTimeout(() => (spaceCount = 0), 500);
+        if (spaceCount >= 3 && !assistantActive) {
+          document.getElementById('assistantModal').classList.remove('hidden');
+          assistantActive = true;
+          // Start voice navigation recognition
+          startVoiceNavigation();
+          setTimeout(() => {
+            document.getElementById('assistantModal').classList.add('hidden');
+            assistantActive = false;
+            stopVoiceNavigation();
+          }, 8000); // Hide after 8 seconds
+        }
+      }
+    });
+    // Voice navigation logic
+    let navRecognition;
+    function startVoiceNavigation() {
+      navRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      navRecognition.continuous = false;
+      navRecognition.interimResults = false;
+      navRecognition.onresult = (event) => {
+        const command = event.results[0][0].transcript.toLowerCase();
+        if (command.includes('course page')) {
+          window.location.href = 'courses.html';
+        } else if (command.includes('listen page')) {
+          window.location.href = 'voice-page.html';
+        }
+      };
+      navRecognition.start();
+    }
+    function stopVoiceNavigation() {
+      if (navRecognition) navRecognition.stop();
+    }
+    </script>
+  </body>
+</html>
