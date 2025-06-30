@@ -45,7 +45,7 @@
           </button>
         </div>
         <div class="absolute md:-left-24 md:top-1/2 md:-translate-y-1/2 left-2 top-1/2 -translate-y-1/2 z-10">
-          <a href="courses.html">
+          <a href="courses_page.html">
             <button
               class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white shadow hover:bg-green-100 transition"
             >
@@ -168,9 +168,9 @@
       navRecognition.onresult = (event) => {
         const command = event.results[0][0].transcript.toLowerCase();
         if (command.includes('course page')) {
-          window.location.href = 'courses.html';
+          window.location.href = 'courses_page.html';
         } else if (command.includes('listen page')) {
-          window.location.href = 'voice-page.html';
+          window.location.href = 'voice_based_course_page.html';
         }
       };
       navRecognition.start();

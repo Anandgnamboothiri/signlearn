@@ -24,7 +24,7 @@
 <body class="bg-gray-50 text-gray-900">
   <!-- Header -->
   <header class="flex items-center justify-between p-6 border-b">
-    <a href="courses.html" class="text-lg flex items-center text-blue-600 hover:underline">
+    <a href="courses_page.html" class="text-lg flex items-center text-blue-600 hover:underline">
       <img src="https://www.svgrepo.com/show/522946/arrow-left.svg" class="w-5 h-5 mr-2" alt="Back" />
       Back to Courses
     </a>
@@ -168,9 +168,9 @@
       navRecognition.onresult = (event) => {
         const command = event.results[0][0].transcript.toLowerCase();
         if (command.includes('course page')) {
-          window.location.href = 'courses.html';
+          window.location.href = 'courses_page.html';
         } else if (command.includes('listen page')) {
-          window.location.href = 'voice-page.html';
+          window.location.href = 'voice_based_course_page.html';
         }
       };
       navRecognition.start();
